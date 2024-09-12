@@ -7,7 +7,17 @@ const public_users = express.Router();
 
 public_users.post("/register", (req,res) => {
   //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(401).json({ message: "username or password is missing !" })
+  }
+
+  users.push({ 'username': username, 'password': password })
+
+  return res.status(300).json({ message: "You have been registered. Now you can login" });
+
+
 });
 
 // Get the book list available in the shop
@@ -16,9 +26,9 @@ public_users.get('/',function (req, res) {
   let strBooks = JSON.stringify(books);
 
   if (strBooks.length > 2) {
-    return res.status(300).json({message: strBooks});
+    return res.status(300).json({ message: strBooks });
   } else {
-    return res.status(404).json({message: "empty list"})
+    return res.status(404).json({ message: "empty list" })
   }
 });
 
@@ -28,9 +38,9 @@ public_users.get('/isbn/:isbn',function (req, res) {
   const { isbn } = req.params;
 
   if (books[isbn]) {
-    return res.status(300).json({message: books[isbn]})
+    return res.status(300).json({ message: books[isbn] })
   } else {
-    return res.status(404).json({message: "book not found!"})
+    return res.status(404).json({ message: "book not found!" })
   }
  });
   
@@ -47,9 +57,9 @@ public_users.get('/author/:author',function (req, res) {
   }
 
   if (list.length > 0) {
-    return res.status(300).json({message: list});
+    return res.status(300).json({ message: list });
   } else {
-    return res.status(404).json({message: "author not found"})
+    return res.status(404).json({ message: "author not found" })
   }
 });
 
@@ -59,11 +69,12 @@ public_users.get('/title/:title',function (req, res) {
   const { title } = req.params;
 
   for (book in books) {
-    if(books[book]['title'] == title){
-        return res.status(300).json({message: books[book]});
+    if (books[book]['title'] == title) {
+        return res.status(300).json({ message: books[book] });
     }
   }
-  return res.status(404).json({message: "book not found!"});
+  
+  return res.status(404).json({ message: "book not found!" });
 });
 
 //  Get book review
@@ -72,9 +83,9 @@ public_users.get('/review/:isbn',function (req, res) {
     const { isbn } = req.params;
 
     if (books[isbn]) {
-        return res.status(300).json({message: books[isbn]['reviews']})
+        return res.status(300).json({ message: books[isbn]['reviews'] })
     } else {
-        return res.status(404).json({message: "book not found!"});
+        return res.status(404).json({ message: "book not found!" });
     }
 });
 
