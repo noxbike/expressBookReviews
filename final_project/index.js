@@ -14,6 +14,12 @@ app.use("/customer",session({secret:"fingerprint_customer",resave: true, saveUni
 
 app.use("/customer/auth/*", function auth(req,res,next){
 //Write the authenication mechanism here
+    res.header('Access-Control-allow-Origin', '*/*');
+    res.header('Access-Control-Expose-Headers', 'Authorization');
+    res.header('Access-Control-AllowHeaders', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    next()
 });
  
 const PORT =5000;
