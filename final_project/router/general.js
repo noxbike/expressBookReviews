@@ -55,12 +55,12 @@ public_users.get('/isbn/:isbn',function (req, res) {
             reject('book not found!')
         }
     })
-        getBookByIsbn.then((succ) => {
-            return res.status(300).json({ message: succ})
-        }).catch(err => {
-            return res.status(404).json({ message: err })
-        })
-    });
+    getBookByIsbn.then((succ) => {
+        return res.status(300).json({ message: succ})
+    }).catch(err => {
+        return res.status(404).json({ message: err })
+    })
+});
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
@@ -91,7 +91,7 @@ public_users.get('/author/:author',function (req, res) {
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
   //Write your code here
-  const { title } = req.params;
+    const { title } = req.params;
     const getBookByTitle = new Promise((resolve, reject) => {
         for (book in books) {
             if (books[book]['title'] == title) {

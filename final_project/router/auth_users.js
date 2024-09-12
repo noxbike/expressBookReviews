@@ -34,34 +34,34 @@ regd_users.post("/login", (req,res) => {
 
   let auth = authenticatedUser(username, password);
 
-  if (auth) {
-    const token = jwt.sign({ username }, secretkey, { expiresIn: '1hr' })
-    return res.status(300).json({ message: token })
-  } else {
-      return res.status(401).json({ message: "Username or password is incorrect !" });
-  }
+    if (auth) {
+        const token = jwt.sign({ username }, secretkey, { expiresIn: '1hr' })
+        return res.status(300).json({ message: token })
+    } else {
+        return res.status(401).json({ message: "Username or password is incorrect !" });
+    }
 });
 
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
   //Write your code here
-  const token = req.headers['authorization'];
-  const { isbn } = req.params;
-  const { review } = req.body;
-  
-  if (!books[isbn]) {
-    return res.status(404).json({ message: "book not found!" })
-  }
-  
-  jwt.verify(token, secretkey, (err, decoded) => {
-    if (err) {
-        return res.status(401).json({message: 'invalid token'})
-    } else {
-        let reviews = books[isbn]['reviews'];
-        reviews[decoded.username] = review
-        return res.status(300) .json({message: books[isbn]})
+    const token = req.headers['authorization'];
+    const { isbn } = req.params;
+    const { review } = req.body;
+    
+    if (!books[isbn]) {
+        return res.status(404).json({ message: "book not found!" })
     }
-  })
+    
+    jwt.verify(token, secretkey, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({message: 'invalid token'})
+        } else {
+            let reviews = books[isbn]['reviews'];
+            reviews[decoded.username] = review
+            return res.status(300) .json({message: books[isbn]})
+        }
+    })
 });
 
 regd_users.delete("/auth/review/:isbn", (req, res) => {
