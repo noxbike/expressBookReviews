@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const session = require('express-session')
 const customer_routes = require('./router/auth_users.js').authenticated;
 const genl_routes = require('./router/general.js').general;
-
+const key = "my_secret_key";
 const app = express();
 
 app.use(express.json());

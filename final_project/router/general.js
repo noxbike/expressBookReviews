@@ -10,12 +10,18 @@ public_users.post("/register", (req,res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
-    return res.status(401).json({ message: "username or password is missing !" })
+    return res.status(401).json({ message: "Username or password is missing !" })
   }
 
-  users.push({ 'username': username, 'password': password })
+  let findSameUsername = isValid(username);
 
-  return res.status(300).json({ message: "You have been registered. Now you can login" });
+  if (findSameUsername) {
+    return res.status(401).json({ message: "User already exist!"})
+  } else {
+      users.push({ 'username': username, 'password': password })
+    
+      return res.status(300).json({ message: "You have been registered. Now you can login" });
+  }
 
 
 });
@@ -73,7 +79,7 @@ public_users.get('/title/:title',function (req, res) {
         return res.status(300).json({ message: books[book] });
     }
   }
-  
+
   return res.status(404).json({ message: "book not found!" });
 });
 
