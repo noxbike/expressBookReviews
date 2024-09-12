@@ -29,20 +29,27 @@ public_users.post("/register", (req,res) => {
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
   //Write your code here
-  let strBooks = JSON.stringify(books);
+  const getAllBooks = new Promise((resolve, reject) => {
+    let strBooks = JSON.stringify(books);
 
-  if (strBooks.length > 2) {
-    return res.status(300).json({ message: strBooks });
-  } else {
-    return res.status(404).json({ message: "empty list" })
-  }
+    if (strBooks.length > 2) {
+      resolve({ message: strBooks });
+    } else {
+      reject({ message: "empty list" })
+    }
+  })
+  getAllBooks.then((succ) => {
+    return res.status(200).json(succ)
+  }) .catch((err) => {
+    return res.status(404).json(err)
+  })
 });
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
   //Write your code here
   const { isbn } = req.params;
-
+  
   if (books[isbn]) {
     return res.status(300).json({ message: books[isbn] })
   } else {
