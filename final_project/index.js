@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const session = require('express-session')
 const customer_routes = require('./router/auth_users.js').authenticated;
 const genl_routes = require('./router/general.js').general;
-const key = "my_secret_key";
 const app = express();
 
 app.use(express.json());
@@ -19,6 +18,11 @@ app.use("/customer/auth/*", function auth(req,res,next){
     res.header('Access-Control-AllowHeaders', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
     res.header('Access-Control-Allow-Credentials', 'true');
+
+    const token = req.headers['authorization'];
+    if (!token) {
+        return res.status(401).json({ message: 'You should login to continue!' })
+    }
     next()
 });
  
