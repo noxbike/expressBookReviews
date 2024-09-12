@@ -45,7 +45,7 @@ public_users.get('/author/:author',function (req, res) {
         list.push(books[book])
     }
   }
-  
+
   if (list.length > 0) {
     return res.status(300).json({message: list});
   } else {
@@ -56,7 +56,14 @@ public_users.get('/author/:author',function (req, res) {
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
   //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  const { title } = req.params;
+
+  for (book in books) {
+    if(books[book]['title'] == title){
+        return res.status(300).json({message: books[book]});
+    }
+  }
+  return res.status(404).json({message: "book not found!"});
 });
 
 //  Get book review
