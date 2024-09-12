@@ -50,12 +50,19 @@ public_users.get('/isbn/:isbn',function (req, res) {
   //Write your code here
   const { isbn } = req.params;
   
-  if (books[isbn]) {
-    return res.status(300).json({ message: books[isbn] })
-  } else {
-    return res.status(404).json({ message: "book not found!" })
-  }
- });
+  const getBookByIsbn = new Promise((resolve, reject) => {
+    if (books[isbn]) {
+        resolve(books[isbn])
+    } else {
+        reject('book not found!')
+    }
+  })
+    getBookByIsbn.then((succ) => {
+        return res.status(300).json({ message: succ})
+    }).catch(err => {
+        return res.status(404).json({ message: err })
+    })
+  });
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
